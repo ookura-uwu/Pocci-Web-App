@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<title>Pocci :: Exam Results</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
+	<script src="https://kit.fontawesome.com/e4667790a4.js" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="/styles.css">
+
+	<link rel="icon" type="image/png" href="/images/firebase-logo.png">
+
+	<style>
+		
+	</style>
+
+  </head>
+  <body>
+
+	<div id="wrapper">
+
+		<!-- SIDEBAR -->
+		<nav id="sidebar">
+			<div class="sidebar-header text-center">
+				<div id="sidebar-header-nav bg-dark" style="height: 56px; background-color: #212529;"></div>
+				<div class="user-view">
+					<div class="background">
+						<img src="./firebase-logo.png" class="cover-photo" alt="">
+					</div>
+				</div>
+			</div>
+			<ul class="list-unstyled components">
+				<span class="text-center">
+					<h6>WELCOME,</h6>
+					<h5>ADMINISTRATOR</h5>
+				</span>
+				<hr>
+				<li><a href="/"><i class="ml-2 fas fa-tachometer-alt"></i>&nbsp; Dashboard</a></li>
+				<li><a href="/users"><i class="ml-2 fas fa-user"></i>&nbsp; User Management</a></li>
+				<li><a href="/position" ><i class="fas fa-filter"></i>&nbsp; Positions</a></li>
+                <li><a href="/exam-results"><i class="fas fa-question-circle"></i>&nbsp; Exam Results</a></li>
+				<li>
+					<a class="nav-link" href="#collapseQuestion" id="navbarDropdown" role="button" data-bs-toggle="collapse" aria-controls="collapseQ" aria-expanded="false">
+						<i class="ml-2 fas fa-caret-down"></i> &nbsp; Question
+					</a>
+					<ul class="collapse" id="collapseQuestion" aria-labelledby="navbarDropdown">
+						<li class="nav-item"><a class="nav-link" href="/question"><i class="fas fa-minus collapseQuestionIcon"></i> Add Question</a></li>
+						<li class="nav-item"><a class="nav-link" href="/view-questions"><i class="fas fa-minus collapseQuestionIcon"></i> View Questions</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		<!-- SIDEBAR END -->
+		
+		<div id="content">
+
+			<!-- NAVBAR -->
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<div class="container-fluid">
+					<button type="button" id="sidebarCollapse" class="navbar-toggler">
+						<i class="navbar-toggler-icon"></i>
+					</button>
+					<a class="navbar-brand" href="#">Pocci Admin Panel</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav ms-auto text-end">
+							<li class="nav-item">
+								<a class="nav-link" aria-current="page" href="#"><i class="fas fa-user-cog"></i> Settings</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+			<!-- NAVBAR END -->
+
+			<div id="content-body">
+
+				<nav id="breadcrumb-path" aria-label="breadcrumb" role="navigation">
+					<ol class="breadcrumb text-muted">
+						<li class="breadcrumb-item"><a href="/">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page"><a href="#">Exam Results</a></li>
+					</ol>
+				</nav>
+
+				<div class="card pmd-card">
+					
+					<div class="card-body">
+						<h2 class="card-title">Exam Results</h2>
+						<div class="dropdown-divider"></div>
+		
+						<button type="button" data-bs-toggle="modal" data-bs-target="#modal-delete-user-exams" class="btn btn-danger delete-user-exams"><i class="fas fa-trash"></i> Delete User Exams</button>
+
+						<div class="dropdown-divider"></div>
+						
+						<!-- USER EXAM TABLE -->
+						<table id="exam-results-table" class="table" width="100%"></table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Delete Questions Modal -->
+	<div class="modal fade" id="modal-delete-user-exams" tabindex="-1" aria-labelledby="modal-add-user-examsLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Delete Selected User Exam(s)</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>Delete Selected User Exam Information(s)?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary user-exams-confirm-delete">Confirm</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Toast for Success Delete -->
+		<div class="toast-container position-absolute start-50 translate-middle-x">
+			<div class="toast align-items-center border-0 bg-dark" id="toast-delete-success" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body text-muted">
+						<img src="/firebase-logo.png" alt="" width="25">
+						Selected User Exam Information(s) Deleted Successfully!
+					</div>
+					<button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Toast for Failed Delete -->
+		<div class="toast-container position-absolute start-50 translate-middle-x">
+			<div class="toast align-items-center border-0 bg-dark" id="toast-delete-fail" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body text-muted">
+						<img src="/firebase-logo.png" alt="" width="25">
+						Please Select User Exam Information(s) To Delete!
+					</div>
+					<button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="overlay"></div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+	<script src="./jquery.touchSwipe.min.js"></script>
+    
+     <!-- Firebase scripts -->
+	<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+    
+    <script src="/firebase.js"></script>
+
+	<script>
+
+        var table = $('#exam-results-table').DataTable({
+            responsive: {
+                details: {
+                    type: 'column',
+                    target: 'tr',
+                    renderer: function(api, rowIdx, columns) {
+                        var data = $.map(columns, function(col, i) {
+                            return col.hidden ? 
+                                '<tr class="results-child-row" data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
+                                    '<td class="child-col-width"><strong>' + col.title + '</strong></td>' +
+                                    '<td>' + col.data + '</td>' +
+                                '</tr>' : '';
+                        }).join('');
+
+                        return data ? $('<table/>').append(data) : false;
+                    }
+                }
+            },
+            createdRow: function(row, data, dataIndex) {
+                $(row).addClass('results-row');
+            },
+            columns: [
+				{ title: '<div class="form-check"><input type="checkbox" class="form-check-input" id="select-all-uid"><label class="form-check-label" for="select-all-uid"></label></div>', className: 'results-col'},
+
+                { title: 'Applicant Name', className: 'results-col', width: "80%" },
+                
+            ]
+        });
+
+		
+        database.ref('/TestResults/').on('value', function(snapshot) {
+			table.clear()
+
+            snapshot.forEach(function(childSnapshot) {
+				var uidCheckbox = '<div class="form-check">' +
+							'<input type="checkbox" class="form-check-input uid-checkbox" id="uid-' + childSnapshot.child("(Userkey)").val() + '">' +
+							'<input type="hidden" name="uid" value="' + childSnapshot.child("(Userkey)").val() + '">' +
+							'<label class="form-check-label" for="uid-' + childSnapshot.child("(Userkey)").val() + '"></label>'
+
+				var name_uid = '<input type="hidden" id="uid-' + childSnapshot.child('(UserKey)').val() + '" value="' + childSnapshot.child('(Userkey)').val() + '">' + 
+								'<a class="btn btn-default btn-sm expand-detail" role="button" data-bs-toggle="collapse" href="#details-' + childSnapshot.child('(Userkey)').val() + '" aria-expanded="false" aria-controls="details-' + childSnapshot.child('(Userkey)').val() + '"><i class="fas fa-plus"></i></a> ' + childSnapshot.child('(Name)').val() +  
+								'<div class="collapse mt-1" id="details-' + childSnapshot.child('(Userkey)').val() + '"></div>'
+
+
+				var dataSet = [ uidCheckbox, name_uid ]
+
+				table.rows.add([dataSet]).draw()
+			})
+        });
+
+		database.ref('/TestResults/').on('value', function(snapshot) {
+			snapshot.forEach(function(childSnapshot) {
+
+				var childRow = ''
+				database.ref().child('TestResults').child(childSnapshot.key).child('ExamsList').on('value', function(ds) {
+					ds.forEach(function(dsChild) {
+						childRow = '<hr class="ms-3"><span class="ms-3">Exam Date: <strong>' + dsChild.child('ExamDate').val() + '</strong></span> &nbsp; | &nbsp; <span>Score: <strong>' + dsChild.child('Score').val() + '</strong></span>'
+
+						$('#details-' + childSnapshot.child('(Userkey)').val() + '').append(childRow)
+					})
+				})
+			})
+		})
+
+		// Check/uncheck all checkboxes
+		$('#select-all-uid').click(function() {
+			$('input:checkbox').not(this).prop('checked', this.checked)
+		})
+
+		// Delete User Exams
+		$('.user-exams-confirm-delete').click(function() {
+			var count = 0
+			var uids = []
+
+			$('.results-row input:checked').each(function() {
+				var uid
+				uid = $(this).closest('tr').find('input[name=uid]').val()
+				uids.push(uid)
+
+				count++
+			})
+
+			console.log(uids)
+
+			if (count > 0) {
+				for (var i = 0; i < uids.length; i++) {
+					database.ref('/TestResults/').child(uids[i]).remove()
+				}
+
+				let myToast = document.getElementById('toast-delete-success')
+				let bsToast = new bootstrap.Toast(myToast)
+				bsToast.show()
+
+				setTimeout(function() { location.reload() }, 1000)
+			} else {
+				let myToast = document.getElementById('toast-delete-fail')
+				let bsToast = new bootstrap.Toast(myToast)
+				bsToast.show()
+			}
+		})
+
+	</script>
+	<script src="/scripts.js"></script>
+  </body>
+</html>
